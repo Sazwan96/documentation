@@ -274,7 +274,7 @@ Override CPU architecture of native modules to install. Acceptable values are sa
 
 #### `depth`
 
-- Default: `Infinity` if `--all` is set, otherwise `1`
+- Default: `Infinity` if `--all` is set, otherwise `0`
 - Type: null or Number
 
 The depth to go when recursing packages for `npm ls`.
@@ -600,6 +600,13 @@ The value `npm init` should use by default for the package license.
 
 A module that will be loaded by the `npm init` command. See the documentation for the [init-package-json](https://github.com/npm/init-package-json) module for more information, or [npm init](/cli/v11/commands/npm-init).
 
+#### `init-type`
+
+- Default: "commonjs"
+- Type: String
+
+The value that `npm init` should use by default for the package.json type field.
+
 #### `init-version`
 
 - Default: "1.0.0"
@@ -741,6 +748,15 @@ The maximum number of connections to use per origin (protocol/host/port combinat
 Commit message which is used by `npm version` when creating version commit.
 
 Any "%s" in the message will be replaced with the version number.
+
+#### `node-gyp`
+
+- Default: The path to the node-gyp bin that ships with npm
+- Type: Path
+
+This is the location of the "node-gyp" bin. By default it uses one that ships with npm itself.
+
+You can use this config to specify your own "node-gyp" to run when it is required to build a package.
 
 #### `node-options`
 
