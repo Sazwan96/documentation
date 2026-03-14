@@ -45,6 +45,32 @@ npm publish <package-spec>
 
 Publishes a package to the registry so that it can be installed by name.
 
+### Examples
+
+Publish the package in the current directory:
+
+```bash
+npm publish
+```
+
+Publish a specific workspace:
+
+```bash
+npm publish --workspace=<workspace-name>
+```
+
+Publish multiple workspaces:
+
+```bash
+npm publish --workspace=workspace-a --workspace=workspace-b
+```
+
+Publish all workspaces:
+
+```bash
+npm publish --workspaces
+```
+
 By default npm will publish to the public registry. This can be overridden by specifying a different default registry or using a [`scope`](/cli/v11/using-npm/scope) in the name, combined with a scope-configured registry (see [`package.json`](/cli/v11/configuring-npm/package-json)).
 
 A `package` is interpreted the same way as other commands (like `npm install`) and can be:
@@ -107,7 +133,7 @@ If used in the `npm publish` command, this is the tag that will be added to the 
 
 If you do not want your scoped package to be publicly viewable (and installable) set `--access=restricted`.
 
-Unscoped packages can not be set to `restricted`.
+Unscoped packages cannot be set to `restricted`.
 
 Note: This defaults to not changing the current access level for existing packages. Specifying a value of `restricted` or `public` during publish will change the access for an existing package the same way that `npm access set status` would.
 
@@ -177,7 +203,7 @@ This value is not exported to the environment for child processes.
 
 When publishing from a supported cloud CI/CD system, the package will be publicly linked to where it was built and published from.
 
-This config can not be used with: `provenance-file`
+This config cannot be used with: `provenance-file`
 
 #### `provenance-file`
 
@@ -186,7 +212,7 @@ This config can not be used with: `provenance-file`
 
 When publishing, the provenance bundle at the given path will be used.
 
-This config can not be used with: `provenance`
+This config cannot be used with: `provenance`
 
 ### See Also
 

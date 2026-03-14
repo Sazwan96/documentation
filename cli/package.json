@@ -24,23 +24,23 @@
     "minimatch": "^10.0.1",
     "minipass": "^7.0.4",
     "pacote": "^21.0.0",
-    "proc-log": "^5.0.0",
+    "proc-log": "^6.0.0",
     "semver": "^7.5.4",
-    "tar": "^7.0.1",
+    "tar": "^7.5.11",
     "yaml": "^2.3.4"
   },
   "devDependencies": {
-    "@npmcli/eslint-config": "^5.0.0",
-    "@npmcli/template-oss": "4.25.0",
+    "@npmcli/eslint-config": "^6.0.0",
+    "@npmcli/template-oss": "4.29.0",
     "tap": "^21.0.0"
   },
   "author": "GitHub Inc.",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.9.0"
   },
   "templateOSS": {
     "//@npmcli/template-oss": "This file is partially managed by @npmcli/template-oss. Edits may be overwritten.",
-    "version": "4.25.0",
+    "version": "4.29.0",
     "content": "./scripts/template-oss"
   },
   "files": [

@@ -1,18 +1,8 @@
-const {getGlobals} = require('eslint-plugin-mdx')
-
 module.exports = {
   root: true,
   ignorePatterns: ['.cache/', 'public/'],
   plugins: ['primer-react'], // github plugin now comes from flat config
-  extends: [
-    '@npmcli',
-    'react-app',
-    'eslint:recommended',
-    'plugin:react/recommended',
-    // 'plugin:github/react',  // REMOVED: now handled by flat config
-    'plugin:react-hooks/recommended',
-    'prettier',
-  ],
+  extends: ['@npmcli', 'react-app', 'eslint:recommended', 'plugin:react/recommended', 'prettier'],
   rules: {
     'max-len': 'off',
     'react/prop-types': 'off',
@@ -48,13 +38,25 @@ module.exports = {
       parserOptions: {
         sourceType: 'module',
       },
-      globals: getGlobals(['Index', 'Note', 'Prompt', 'Screenshot', 'Link', 'YouTube']),
+      globals: {
+        Index: 'readonly',
+        Note: 'readonly',
+        Prompt: 'readonly',
+        Screenshot: 'readonly',
+        Link: 'readonly',
+        YouTube: 'readonly',
+        DataTable: 'readonly',
+        InlineCode: 'readonly',
+        Strikethrough: 'readonly',
+        CliLink: 'readonly',
+      },
       settings: {
         'import/resolver': 'webpack',
       },
       rules: {
         'no-irregular-whitespace': 'off',
         'react/no-unescaped-entities': 'off',
+        'react/jsx-key': 'off',
       },
     },
     {
@@ -98,7 +100,8 @@ module.exports = {
               'dfn',
               'dialog',
               'dir',
-              'div',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'div',
               'dl',
               'dt',
               'element',
@@ -118,12 +121,15 @@ module.exports = {
               'h5',
               'h6',
               'head',
-              'header',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'header',
               'hgroup',
               'hr',
               // used in head
               // 'html',
               'i',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'iframe',
               'input',
               'ins',
               'isindex',
@@ -134,13 +140,15 @@ module.exports = {
               // ok because there is no mdx replacement and styles are provided via parent ul/ol
               // 'li',
               'listing',
-              'main',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'main',
               'map',
               'mark',
               'menu',
               'menuitem',
               'meter',
-              'nav',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'nav',
               'noembed',
               'noscript',
               'object',
@@ -148,10 +156,12 @@ module.exports = {
               'optgroup',
               'option',
               'output',
-              'p',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'p',
               'param',
               'plaintext',
-              'pre',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'pre',
               'progress',
               'q',
               'rp',
@@ -189,7 +199,8 @@ module.exports = {
               'track',
               'tt',
               'u',
-              'ul',
+              // ok because Box is deprecated and styles are provided via CSS modules
+              // 'ul',
               'var',
               'video',
               'wbr',

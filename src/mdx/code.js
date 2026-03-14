@@ -1,11 +1,12 @@
 import React from 'react'
-import {Box, Text, Button, themeGet} from '@primer/react'
-import {Octicon} from '@primer/react/deprecated'
+import {Text, Button} from '@primer/react'
 import {Highlight, themes, Prism} from 'prism-react-renderer'
 import styled from 'styled-components'
 import {CheckIcon, CopyIcon} from '@primer/octicons-react'
 import copyToClipboard from 'copy-to-clipboard'
 import {announce} from '../util/aria-live'
+import * as styles from './code.module.css'
+import {clsx} from 'clsx'
 ;(typeof global !== 'undefined' ? global : window).Prism = Prism
 require('prismjs/components/prism-bash')
 
@@ -24,78 +25,48 @@ const ClipboardCopy = ({value, ...props}) => {
 
   return (
     <Button
-      {...props}
       aria-label="Copy to clipboard"
+      size="small"
       onClick={() => {
         copyToClipboard(value)
         setCopied(true)
         announce(`Copied to clipboard`)
       }}
+      className={clsx(styles.Button, props.className)}
     >
-      <Octicon icon={copied ? CheckIcon : CopyIcon} sx={{color: copied ? 'success.fg' : 'fg.muted'}} />
+      {copied ? <CheckIcon fill="#1a7f37" /> : <CopyIcon fill="#656d76" />}
     </Button>
   )
 }
 
 export const InlineCode = styled.code`
   padding: 0.2em 0.4em;
-  font-family: ${themeGet('fonts.mono')};
-  font-size: 85%;
-  background-color: ${themeGet('colors.neutral.muted')};
-  border-radius: ${themeGet('radii.2')};
+  font-family: var(--fontStack-monospace, ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace);
+  font-size: 80%;
+  background-color: var(--bgColor-neutral-muted, #afb8c133);
+  border-radius: 6px;
 `
 const colorMap = {
   'token comment': '#747458',
   'token function': '#cf3846',
   'token parameter variable': '#277d7b',
   'token assign-left variable': '#277d7b',
+  'token string': '#db1068',
 }
 
-const MonoText = props => <Text sx={{fontFamily: 'mono', fontSize: 1}} {...props} />
+const MonoText = props => <Text className={styles.Text} {...props} />
 
 const CodeBlock = ({children, code, className, style}) => (
-  <Box
-    sx={{
-      // Make <pre> adjust to the width of the container
-      // https://stackoverflow.com/a/14406386
-      display: 'table',
-      tableLayout: 'fixed',
-      width: '100%',
-      mb: 3,
-    }}
-  >
-    <Box
-      style={style}
-      sx={{
-        ...(code ? {display: 'flex', justifyContent: 'space-between', flexDirection: 'row-reverse'} : {}),
-        borderRadius: 2,
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'border.muted',
-      }}
-    >
-      {code ? (
-        <ClipboardCopy
-          value={code}
-          sx={{
-            borderRadius: 0,
-            borderStyle: 'solid',
-            borderWidth: 1,
-            borderColor: 'border.muted',
-            marginTop: '-1px',
-            marginRight: '-1px',
-            borderTopRightRadius: 2,
-            borderBottomLeftRadius: 2,
-          }}
-        />
-      ) : null}
-      <Box sx={{m: 0, p: 3, overflowX: 'auto'}}>
-        <Box as="pre" className={className} tabIndex={0} sx={{m: 0}}>
+  <div className={styles.Box}>
+    <div style={style} className={styles.Box_1}>
+      {code ? <ClipboardCopy value={code} className={styles.ClipboardCopy} /> : null}
+      <div className={styles.Box_2}>
+        <pre className={clsx(className, styles.Box_3)} tabIndex={0}>
           {children}
-        </Box>
-      </Box>
-    </Box>
-  </Box>
+        </pre>
+      </div>
+    </div>
+  </div>
 )
 
 function Code({className = '', prompt, children}) {
@@ -119,7 +90,7 @@ function Code({className = '', prompt, children}) {
       {({className: highlightClassName, style, tokens, getLineProps, getTokenProps}) => (
         <CodeBlock className={highlightClassName} style={style} code={code}>
           {tokens.map((line, i) => (
-            <Box key={i} {...getLineProps({line, key: i})}>
+            <div key={i} {...getLineProps({line, key: i})}>
               {line.map((token, key) => {
                 const tokenProps = getTokenProps({token, key})
                 const tokenStyle = colorMap[tokenProps.className]
@@ -128,7 +99,7 @@ function Code({className = '', prompt, children}) {
 
                 return <MonoText key={key} {...tokenProps} style={tokenStyle} />
               })}
-            </Box>
+            </div>
           ))}
         </CodeBlock>
       )}

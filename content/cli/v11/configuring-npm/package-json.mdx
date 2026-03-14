@@ -69,6 +69,16 @@ Put a description in it. It's a string. This helps people discover your package,
 
 Put keywords in it. It's an array of strings. This helps people discover your package as it's listed in `npm search`.
 
+Example:
+
+```json
+"keywords": [
+  "node",
+  "javascript",
+  "npm"
+]
+```
+
 ### homepage
 
 The URL to the project homepage.
@@ -299,7 +309,7 @@ Most of these ignored files can be included specifically if included in the `fil
 - `yarn.lock`
 - `bun.lockb`
 
-These can not be included.
+These cannot be included.
 
 ### exports
 
@@ -314,6 +324,12 @@ This should be a module relative to the root of your package folder.
 For most modules, it makes the most sense to have a main script and often not much else.
 
 If `main` is not set, it defaults to `index.js` in the package's root folder.
+
+### type
+
+The `type` field defines how Node.js should interpret `.js` files in your package. This field is not used by npm.
+
+See the [Node.js documentation on the type field](https://nodejs.org/api/packages.html#type) for more information.
 
 ### browser
 
@@ -359,7 +375,7 @@ would be the same as this:
 }
 ```
 
-Please make sure that your file(s) referenced in `bin` starts with `#!/usr/bin/env node`, otherwise the scripts are started without the node executable!
+Please make sure that your file(s) referenced in `bin` starts with `#!/usr/bin/env node`; otherwise, the scripts are started without the node executable!
 
 Note that you can also set the executable files using [directories.bin](#directoriesbin).
 
@@ -460,6 +476,19 @@ For GitHub, GitHub gist, Bitbucket, or GitLab repositories you can use the same 
 }
 ```
 
+**Note on normalization:** When you publish a package, npm normalizes the `repository` field to the full object format with a `url` property. If you use a shorthand format (like `"npm/example"`), you'll see a warning during `npm publish` indicating that the field was auto-corrected. While the shorthand format currently works, it's recommended to use the full object format in your `package.json` to avoid warnings and ensure future compatibility:
+
+```json
+{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npm/example.git"
+  }
+}
+```
+
+You can run `npm pkg fix` to automatically convert shorthand formats to the normalized object format.
+
 If the `package.json` for your package is not in the root directory (for example if it is part of a monorepo), you can specify the directory in which it lives:
 
 ```json
@@ -477,6 +506,20 @@ If the `package.json` for your package is not in the root directory (for example
 The "scripts" property is a dictionary containing script commands that are run at various times in the lifecycle of your package. The key is the lifecycle event, and the value is the command to run at that point.
 
 See [`scripts`](/cli/v11/using-npm/scripts) to find out more about writing package scripts.
+
+### gypfile
+
+If you have a binding.gyp file in the root of your package and you have not defined your own `install` or `preinstall` scripts, npm will default to building your module using node-gyp.
+
+To prevent npm from automatically building your module with node-gyp, set `gypfile` to `false`:
+
+```json
+{
+  "gypfile": false
+}
+```
+
+This is useful for packages that include native addons but want to handle the build process differently, or packages that have a binding.gyp file but should not be built as a native addon.
 
 ### config
 
@@ -843,6 +886,52 @@ You may not set an override for a package that you directly depend on unless bot
 }
 ```
 
+#### Replacing a dependency with a fork
+
+You can replace a package with a different package or fork using several methods:
+
+**Using the `npm:` prefix to replace with a different package name:**
+
+```json
+{
+  "overrides": {
+    "package-name": "npm:@scope/forked-package@1.0.0"
+  }
+}
+```
+
+**Using a GitHub repository (supports branches, tags, or commit hashes):**
+
+```json
+{
+  "overrides": {
+    "package-name": "github:username/repo#branch-name"
+  }
+}
+```
+
+**Using a local file path:**
+
+```json
+{
+  "overrides": {
+    "package-name": "file:../local-fork"
+  }
+}
+```
+
+These replacement methods work for both top-level overrides and nested overrides. For example, to replace a transitive dependency with a fork:
+
+```json
+{
+  "overrides": {
+    "parent-package": {
+      "vulnerable-dep": "github:username/patched-fork#v2.0.1"
+    }
+  }
+}
+```
+
 ### engines
 
 You can specify the version of node that your stuff works on:
@@ -928,7 +1017,7 @@ The `devEngines` field aids engineers working on a codebase to all be using the 
 
 You can specify a `devEngines` property in your `package.json` which will run before `install`, `ci`, and `run` commands.
 
-> Note: `engines` and `devEngines` differ in object shape. They also function very differently. `engines` is designed to alert the user when a dependency uses a differening npm or node version that the project it's being used in, whereas `devEngines` is used to alert people interacting with the source code of a project.
+> Note: `engines` and `devEngines` differ in object shape. They also function very differently. `engines` is designed to alert the user when a dependency uses a different npm or node version than the project it's being used in, whereas `devEngines` is used to alert people interacting with the source code of a project.
 
 The supported keys under the `devEngines` property are `cpu`, `os`, `libc`, `runtime`, and `packageManager`. Each property can be an object or an array of objects. Objects must contain `name`, and optionally can specify `version`, and `onFail`. `onFail` can be `warn`, `error`, or `ignore`, and if left undefined is of the same value as `error`. `npm` will assume that you're running with `node`. Here's an example of a project that will fail if the environment is not `node` and `npm`. If you set `runtime.name` or `packageManager.name` to any other string, it will fail within the npm CLI.
 
