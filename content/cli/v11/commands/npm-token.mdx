@@ -3,36 +3,20 @@ title: npm-token
 section: 1
 description: Manage your authentication tokens
 github_repo: npm/cli
-github_branch: latest
+github_branch: release/v11
 github_path: docs/lib/content/commands/npm-token.md
 redirect_from:
-  - /cli-commands/npm-token
-  - /cli-commands/token
-  - /cli-documentation/cli-commands/npm-token
-  - /cli-documentation/cli-commands/token
-  - /cli-documentation/commands/npm-token
-  - /cli-documentation/commands/token
-  - /cli-documentation/npm-token
-  - /cli-documentation/token
   - /cli-documentation/v11/cli-commands/npm-token
   - /cli-documentation/v11/cli-commands/token
   - /cli-documentation/v11/commands/npm-token
   - /cli-documentation/v11/commands/token
   - /cli-documentation/v11/npm-token
   - /cli-documentation/v11/token
-  - /cli/cli-commands/npm-token
-  - /cli/cli-commands/token
-  - /cli/commands/npm-token
-  - /cli/commands/token
-  - /cli/npm-token
-  - /cli/token
   - /cli/v11/cli-commands/npm-token
   - /cli/v11/cli-commands/token
   - /cli/v11/commands/token
   - /cli/v11/npm-token
   - /cli/v11/token
-  - /commands/npm-token
-  - /commands/token
 ---
 
 ### Synopsis
@@ -119,9 +103,9 @@ When creating a Granular Access Token with `npm token create`, this limits the t
 #### `packages-and-scopes-permission`
 
 - Default: null
-- Type: null, "read-only", "read-write", or "no-access"
+- Type: null, "read-only", "read-write", "read-write-stage-only", or "no-access"
 
-When creating a Granular Access Token with `npm token create`, sets the permission level for packages and scopes. Options are "read-only", "read-write", or "no-access".
+When creating a Granular Access Token with `npm token create`, sets the permission level for packages and scopes. Options are "read-only", "read-write", "read-write-stage-only", or "no-access". "read-write-stage-only" grants publish access that stages releases instead of publishing them directly.
 
 #### `orgs-permission`
 

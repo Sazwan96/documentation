@@ -3,36 +3,20 @@ title: npm-rebuild
 section: 1
 description: Rebuild a package
 github_repo: npm/cli
-github_branch: latest
+github_branch: release/v11
 github_path: docs/lib/content/commands/npm-rebuild.md
 redirect_from:
-  - /cli-commands/npm-rebuild
-  - /cli-commands/rebuild
-  - /cli-documentation/cli-commands/npm-rebuild
-  - /cli-documentation/cli-commands/rebuild
-  - /cli-documentation/commands/npm-rebuild
-  - /cli-documentation/commands/rebuild
-  - /cli-documentation/npm-rebuild
-  - /cli-documentation/rebuild
   - /cli-documentation/v11/cli-commands/npm-rebuild
   - /cli-documentation/v11/cli-commands/rebuild
   - /cli-documentation/v11/commands/npm-rebuild
   - /cli-documentation/v11/commands/rebuild
   - /cli-documentation/v11/npm-rebuild
   - /cli-documentation/v11/rebuild
-  - /cli/cli-commands/npm-rebuild
-  - /cli/cli-commands/rebuild
-  - /cli/commands/npm-rebuild
-  - /cli/commands/rebuild
-  - /cli/npm-rebuild
-  - /cli/rebuild
   - /cli/v11/cli-commands/npm-rebuild
   - /cli/v11/cli-commands/rebuild
   - /cli/v11/commands/rebuild
   - /cli/v11/npm-rebuild
   - /cli/v11/rebuild
-  - /commands/npm-rebuild
-  - /commands/rebuild
 ---
 
 ### Synopsis
@@ -108,6 +92,37 @@ Note that this will generally make installs run slower, and be much noisier, but
 If true, npm does not run scripts specified in package.json files.
 
 Note that commands explicitly intended to run a particular script, such as `npm start`, `npm stop`, `npm restart`, `npm test`, and `npm run` will still run their intended script if `ignore-scripts` is set, but they will _not_ run any pre- or post-scripts.
+
+#### `allow-scripts`
+
+- Default: ""
+- Type: String (can be set multiple times)
+
+Comma-separated list of packages whose install-time lifecycle scripts (`preinstall`, `install`, `postinstall`, and `prepare` for non-registry dependencies) are allowed to run.
+
+This setting is intended for one-off and global contexts: `npm exec`, `npx`, and `npm install -g`, where no project `package.json` is involved. For team-wide policy in a project, use the `allowScripts` field in `package.json` (which also supports explicit denials), or configure it in `.npmrc`. Passing `--allow-scripts` on the command line during a project-scoped `npm install`, `ci`, `update`, or `rebuild` is an error.
+
+Each name is matched against a dependency's resolved identity, not against the package's self-reported name. `--ignore-scripts` and `--dangerously-allow-all-scripts` both override this setting.
+
+This value is not exported to the environment for child processes.
+
+#### `strict-allow-scripts`
+
+- Default: false
+- Type: Boolean
+
+If `true`, turn the install-script policy from a warning into a hard error: any dependency with install scripts not covered by `allowScripts` will fail the install instead of running with a notice.
+
+Dependencies explicitly denied with `false` in `allowScripts` are always silently skipped; this setting only affects unreviewed entries. `--ignore-scripts` and `--dangerously-allow-all-scripts` both override this setting.
+
+Optional dependencies that cannot be installed on the current platform or engine (a non-matching `os`, `cpu`, or `libc`) are not flagged, because their install scripts never run.
+
+#### `dangerously-allow-all-scripts`
+
+- Default: false
+- Type: Boolean
+
+If `true`, bypass the `allowScripts` policy entirely and run every dependency install script regardless of whether it was approved or denied. Intended as a migration escape hatch only; its use is strongly discouraged. `--ignore-scripts` still takes precedence over this setting.
 
 #### `workspace`
 

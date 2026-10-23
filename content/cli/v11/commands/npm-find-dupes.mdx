@@ -3,36 +3,20 @@ title: npm-find-dupes
 section: 1
 description: Find duplication in the package tree
 github_repo: npm/cli
-github_branch: latest
+github_branch: release/v11
 github_path: docs/lib/content/commands/npm-find-dupes.md
 redirect_from:
-  - /cli-commands/find-dupes
-  - /cli-commands/npm-find-dupes
-  - /cli-documentation/cli-commands/find-dupes
-  - /cli-documentation/cli-commands/npm-find-dupes
-  - /cli-documentation/commands/find-dupes
-  - /cli-documentation/commands/npm-find-dupes
-  - /cli-documentation/find-dupes
-  - /cli-documentation/npm-find-dupes
   - /cli-documentation/v11/cli-commands/find-dupes
   - /cli-documentation/v11/cli-commands/npm-find-dupes
   - /cli-documentation/v11/commands/find-dupes
   - /cli-documentation/v11/commands/npm-find-dupes
   - /cli-documentation/v11/find-dupes
   - /cli-documentation/v11/npm-find-dupes
-  - /cli/cli-commands/find-dupes
-  - /cli/cli-commands/npm-find-dupes
-  - /cli/commands/find-dupes
-  - /cli/commands/npm-find-dupes
-  - /cli/find-dupes
-  - /cli/npm-find-dupes
   - /cli/v11/cli-commands/find-dupes
   - /cli/v11/cli-commands/npm-find-dupes
   - /cli/v11/commands/find-dupes
   - /cli/v11/find-dupes
   - /cli/v11/npm-find-dupes
-  - /commands/find-dupes
-  - /commands/npm-find-dupes
 ---
 
 ### Synopsis
@@ -52,7 +36,9 @@ Runs `npm dedupe` in `--dry-run` mode, making npm only output the duplications, 
 - Default: "hoisted"
 - Type: "hoisted", "nested", "shallow", or "linked"
 
-Sets the strategy for installing packages in node_modules. hoisted (default): Install non-duplicated in top-level, and duplicated as necessary within directory structure. nested: (formerly --legacy-bundling) install in place, no hoisting. shallow (formerly --global-style) only install direct deps at top-level. linked: (experimental) install in node_modules/.store, link in place, unhoisted.
+Sets the strategy for installing packages in node_modules. hoisted (default): Install non-duplicated in top-level, and duplicated as necessary within directory structure. nested: (formerly --legacy-bundling) install in place, no hoisting. shallow (formerly --global-style) only install direct deps at top-level. linked: install in node_modules/.store, link in place, unhoisted.
+
+We recommend that package authors use `--install-strategy=linked` during development to catch undeclared ("phantom") dependencies before publishing: the isolated layout only exposes a package's declared dependencies, so an `import` of a package that was never added to `package.json` can fail instead of resolving by accident and shipping broken. See [Catching undeclared ("phantom") dependencies](/cli/v11/using-npm/developers#catching-undeclared-phantom-dependencies).
 
 #### `legacy-bundling`
 
